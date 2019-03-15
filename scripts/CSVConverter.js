@@ -8,7 +8,7 @@ fs.createReadStream('..\\tmdb-5000-movie-dataset\\tmdb_5000_movies.csv')
     .pipe(csv())
     .on('data', (data) => results.push(data))
     .on('end', () => {
-        fs.writeFile("..\\tmdb-5000-movie-dataset\\outputs.json", JSON.stringify(results.slice(0,100)), (err) => {
+        fs.writeFile("..\\tmdb-5000-movie-dataset\\outputs.json", JSON.stringify(results), (err) => {
             if (err) {
                 console.log(err);
                 return;
