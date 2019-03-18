@@ -18,7 +18,6 @@ import Tooltip from '@material-ui/core/Tooltip';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import { lighten } from '@material-ui/core/styles/colorManipulator';
-import { Grid } from '@material-ui/core/Grid'
 import Charts from '../Charts'
 
 const rows = [
@@ -205,21 +204,28 @@ EnhancedTableToolbar = withStyles(toolbarStyles)(EnhancedTableToolbar)
 class CustomizedTable extends React.Component {
     constructor(props) {
         super(props);
+        const parsedMovies = props.data.map(movie => {
+            return {
+                ...movie,
+                revenue: Number(movie.revenue),
+                budget: Number(movie.budget)
+            }
+        });
+
         this.state = {
             order: 'desc',
             orderBy: 'vote_average',
             selected: [],
-            movies: props.data.map(movie => {
-                return {
-                    ...movie,
-                    revenue: Number(movie.revenue),
-                    budget: Number(movie.revenue)
-                }
-            }),
+            movies: parsedMovies,
             page: 0,
             rowsPerPage: 20,
-
+            currentMoviesOnPage: this.getCurrentMovies(parsedMovies, 'desc', 'vote_average', 0, 20)
         };
+    }
+
+    getCurrentMovies = (movies, order, orderBy, page, rowsPerPage) => {
+        return stableSort(movies, getSorting(order, orderBy))
+            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
     }
 
     handleRequestSort = (event, property) => {
@@ -272,13 +278,14 @@ class CustomizedTable extends React.Component {
 
     isSelected = id => this.state.selected.indexOf(id) !== -1;
 
+
     render() {
         const { classes } = this.props;
         const { movies, order, orderBy, selected, rowsPerPage, page } = this.state;
         const emptyRows = rowsPerPage - Math.min(rowsPerPage, movies.length - page * rowsPerPage);
-        const currentMoviesOnPage = stableSort(movies, getSorting(order, orderBy))
+        let currentMoviesOnPage = stableSort(movies, getSorting(order, orderBy))
         .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
- 
+
         return (
             <div>
                 {
