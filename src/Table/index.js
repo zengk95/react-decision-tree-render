@@ -17,8 +17,9 @@ import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
+import Grid from '@material-ui/core/Grid';
 import { lighten } from '@material-ui/core/styles/colorManipulator';
-import Charts from '../Charts'
+import { LineChartRevenueBudget, HistogramBudgetScore } from '../Charts'
 
 const rows = [
     { id: 'title', numeric: false, disablePadding: true, label: 'Title' },
@@ -204,11 +205,13 @@ EnhancedTableToolbar = withStyles(toolbarStyles)(EnhancedTableToolbar)
 class CustomizedTable extends React.Component {
     constructor(props) {
         super(props);
+        console.log(props);
         const parsedMovies = props.data.map(movie => {
             return {
                 ...movie,
-                revenue: Number(movie.revenue),
-                budget: Number(movie.budget)
+                revenue: Number(movie.revenue) / 1000000,
+                budget: Number(movie.budget) / 1000000,
+                vote_average: Number(movie.vote_average)
             }
         });
 
@@ -284,19 +287,46 @@ class CustomizedTable extends React.Component {
         const { movies, order, orderBy, selected, rowsPerPage, page } = this.state;
         const emptyRows = rowsPerPage - Math.min(rowsPerPage, movies.length - page * rowsPerPage);
         let currentMoviesOnPage = stableSort(movies, getSorting(order, orderBy))
-        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
+            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
         return (
             <div>
-                {
-                    <Paper>
-                        <Charts alignContent="center" data={currentMoviesOnPage} />
-                    </Paper>
-                }
+                <Grid container spacing={24}>
+                    {
+                        <Grid item xs={12} sm={6}>
+                            <Paper>
+                                <LineChartRevenueBudget alignContent="center" data={currentMoviesOnPage} />
+                            </Paper>
+                        </Grid>
+
+                    }
+                    {
+                        <Grid item xs={12} sm={6}>
+                            <Paper>
+                                <HistogramBudgetScore alignContent="center" data={movies} />
+                            </Paper>
+                        </Grid>
+                    }
+                </Grid>
                 {
                     <Paper className={classes.root}>
                         <EnhancedTableToolbar numSelected={selected.length} />
                         <div className={classes.tableWrapper}>
+                            <TablePagination
+                                rowsPerPageOptions={[5, 10, 25]}
+                                component="div"
+                                count={movies.length}
+                                rowsPerPage={rowsPerPage}
+                                page={page}
+                                backIconButtonProps={{
+                                    'aria-label': 'Previous Page',
+                                }}
+                                nextIconButtonProps={{
+                                    'aria-label': 'Next Page',
+                                }}
+                                onChangePage={this.handleChangePage}
+                                onChangeRowsPerPage={this.handleChangeRowsPerPage}
+                            />
                             <Table className={classes.table} aria-labelledby="tableTitle">
                                 <EnhancedTableHead
                                     numSelected={selected.length}
@@ -326,9 +356,9 @@ class CustomizedTable extends React.Component {
                                                     {n.title}
                                                 </TableCell>
                                                 <TableCell align="right">{n.release_date}</TableCell>
-                                                <TableCell align="right">{Math.round(n.revenue / 1000000)}</TableCell>
-                                                <TableCell align="right">{Math.round(n.budget / 1000000)}</TableCell>
-                                                <TableCell align="right">{n.vote_average}</TableCell>
+                                                <TableCell align="right">{Math.round(n.revenue)}</TableCell>
+                                                <TableCell align="right">{Math.round(n.budget)}</TableCell>
+                                                <TableCell align="right">{n.vote_average.toFixed(1)}</TableCell>
                                             </TableRow>
                                         );
                                     })}
