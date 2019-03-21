@@ -19,7 +19,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import Grid from '@material-ui/core/Grid';
 import { lighten } from '@material-ui/core/styles/colorManipulator';
-import { LineChartRevenueBudget, HistogramBudgetScore } from '../Charts'
+import { LineChartRevenueBudget, HistogramBudgetScore, HistogramRatingDistribution } from '../Charts'
 
 const rows = [
     { id: 'title', numeric: false, disablePadding: true, label: 'Title' },
@@ -286,7 +286,7 @@ class CustomizedTable extends React.Component {
         const { classes } = this.props;
         const { movies, order, orderBy, selected, rowsPerPage, page } = this.state;
         const emptyRows = rowsPerPage - Math.min(rowsPerPage, movies.length - page * rowsPerPage);
-        let currentMoviesOnPage = stableSort(movies, getSorting(order, orderBy))
+        const currentMoviesOnPage = stableSort(movies, getSorting(order, orderBy))
             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
         return (
@@ -307,6 +307,22 @@ class CustomizedTable extends React.Component {
                             </Paper>
                         </Grid>
                     }
+
+                    {
+                        <Grid item xs={12} sm={6}>
+                            <Paper>
+                                <HistogramRatingDistribution alignContent="center" data={movies} />
+                            </Paper>
+                        </Grid>
+                    }
+
+                    {/* {
+                        <Grid item xs={12} sm={6}>
+                            <Paper>
+                                <HistogramBudgetScore alignContent="center" data={movies} />
+                            </Paper>
+                        </Grid>
+                    } */}
                 </Grid>
                 {
                     <Paper className={classes.root}>
