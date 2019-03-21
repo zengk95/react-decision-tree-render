@@ -303,7 +303,7 @@ class CustomizedTable extends React.Component {
                     {
                         <Grid item xs={12} sm={6}>
                             <Paper>
-                                <HistogramBudgetScore alignContent="center" data={movies} />
+                                <HistogramBudgetScore alignContent="center" data={movies.slice(0,1000)} />
                             </Paper>
                         </Grid>
                     }
