@@ -205,7 +205,6 @@ EnhancedTableToolbar = withStyles(toolbarStyles)(EnhancedTableToolbar)
 class CustomizedTable extends React.Component {
     constructor(props) {
         super(props);
-        console.log(props);
         const parsedMovies = props.data.map(movie => {
             return {
                 ...movie,
