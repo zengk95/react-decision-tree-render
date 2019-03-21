@@ -113,9 +113,10 @@ export class HistogramRatingDistribution extends PureComponent {
 
         data.forEach(movie => {
             data1[movie.vote_average] = data1[movie.vote_average] === undefined ? 1 : data1[movie.vote_average] + 1;
-        })
+        }).map( (rating, count) => {
+            r
+        });
 
-   
         console.log("data");
         console.log(data1);
 
