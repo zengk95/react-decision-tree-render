@@ -19,8 +19,8 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import Grid from '@material-ui/core/Grid';
 import { lighten } from '@material-ui/core/styles/colorManipulator';
-import { LineChartRevenueBudget, HistogramBudgetScore, HistogramRatingDistribution } from '../Charts'
-
+//import { LineChartRevenueBudget, HistogramBudgetScore, HistogramRatingDistribution } from '../Charts'
+import LineChartRevenueBudget from '..//Charts'
 const rows = [
     { id: 'title', numeric: false, disablePadding: true, label: 'Title' },
     { id: 'release_date', numeric: true, disablePadding: false, label: 'Release Date' },
@@ -299,7 +299,7 @@ class CustomizedTable extends React.Component {
                         </Grid>
 
                     }
-                    {
+                    {/* {
                         <Grid item xs={12} sm={6}>
                             <Paper>
                                 <HistogramBudgetScore alignContent="center" data={movies.slice(0,1000)} />
@@ -313,7 +313,7 @@ class CustomizedTable extends React.Component {
                                 <HistogramRatingDistribution alignContent="center" data={movies} />
                             </Paper>
                         </Grid>
-                    }
+                    } */}
 
                     {/* {
                         <Grid item xs={12} sm={6}>
